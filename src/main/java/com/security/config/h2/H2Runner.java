@@ -1,4 +1,4 @@
-package com.security.config;
+package com.security.config.h2;
 
 import java.sql.Connection;
 import java.sql.Statement;

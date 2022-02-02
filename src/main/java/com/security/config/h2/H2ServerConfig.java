@@ -1,4 +1,4 @@
-package com.security.config;
+package com.security.config.h2;
 
 import java.sql.SQLException;
 import org.h2.tools.Server;
