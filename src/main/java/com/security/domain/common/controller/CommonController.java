@@ -23,6 +23,7 @@ public class CommonController {
   }
 
   @GetMapping("/login")
+  @ResponseBody
   public String login(){
     return "login";
   }
