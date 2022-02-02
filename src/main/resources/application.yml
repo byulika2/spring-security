@@ -11,3 +11,10 @@ spring:
     username: chris
     password: chris0331!
     driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect  #???? DB? ?? ??
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
