@@ -5,7 +5,6 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,10 +28,14 @@ public class H2Runner implements ApplicationRunner {
       String User = connection.getMetaData().getUserName();
       log.info("User {}", User);
       Statement statement = connection.createStatement();
-      String sql = "CREATE TABLE USER(ID INTEGER NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID) )";
-      statement.executeUpdate(sql);
+//      String sql = "CREATE TABLE USER(ID INTEGER NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID) )";
+//      statement.executeUpdate(sql);
     }
-    jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'testuser')");
+//    jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'testuser')");
+    jdbcTemplate.execute("insert into PUBLIC.USER (ID, CREATE_AT, EMAIL, PASSWORD, ROLE, USERNAME)\n"
+        + "values  (1, '2022-02-04 01:24:24.397165', 'asd@naver.com', '$2a$10$jDeBg9tBVJ3tTJr3LWvp/u15gkllodKsZjvtZTxiGERrnsNtgF23u', 'ROLE_USER', 'asd1234'),\n"
+        + "        (2, '2022-02-04 01:26:24.109434', 'manager@naver.com', '$2a$10$kF9kvb7wdzYZ2X5Z6gAP2uTU9XVcJGesj46IOVJ5Ame8.L8vUQeZG', 'ROLE_MANAGER', 'manager'),\n"
+        + "        (3, '2022-02-04 01:26:35.794715', 'admin@naver.com', '$2a$10$YpQmv2qROCiNLLCU9Fm32.M7Fi1YDHAcO5c9CfAtrzYS.DHAmJHsC', 'ROLE_ADMIN', 'admin')");
   }
 }
 
