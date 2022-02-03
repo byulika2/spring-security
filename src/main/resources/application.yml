@@ -17,4 +17,16 @@ spring:
     hibernate:
       ddl-auto: update
 
+  # Security Settings
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 982584669219-e10m26017r88bn1hbke4jeglb2gasiek.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
+
 
