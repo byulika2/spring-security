@@ -11,29 +11,36 @@ package com.security.auth;
 import com.security.model.User;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import lombok.Getter;
+import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
-public class PrincipalDetails implements UserDetails {
+@Getter
+@ToString
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
-  private com.security.model.User user; //콤포지션
+  //콤포지션
+  private User user;
+  private Map<String, Object> attributes;
 
+  // 일반 시큐리티 로그인시 사용
   public PrincipalDetails(User user) {
     this.user = user;
   }
 
-  // 해당 User의 권한을 리턴
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    Collection<GrantedAuthority> collection = new ArrayList<>();
-    collection.add(new GrantedAuthority() {
-      @Override
-      public String getAuthority() {
-        return user.getRole();
-      }
-    });
-    return collection;
+  // OAuth2.0 로그인시 사용
+  public PrincipalDetails(User user, Map<String, Object> attributes) {
+    this.user = user;
+    this.attributes = attributes;
   }
+
+  /**
+   * UserDetails Override
+   */
 
   @Override
   public String getPassword() {
@@ -66,5 +73,27 @@ public class PrincipalDetails implements UserDetails {
     // 현재시간 - 로긴 시간 => 1년 초과시 return false;
 
     return true;
+  }
+
+  @Override
+  public String getName() {
+    return null;
+  }
+
+  /**
+   * OAuth2USer Override
+   */
+
+  @Override
+  public Map<String, Object> getAttributes() {
+    return attributes;
+  }
+
+  // 해당 User의 권한을 리턴
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    Collection<GrantedAuthority> collection = new ArrayList<>();
+    collection.add((GrantedAuthority) () -> user.getRole());
+    return collection;
   }
 }

@@ -11,15 +11,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "USER")
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
   @Id
@@ -34,6 +35,20 @@ public class User {
 
   private String role;
 
+  private String provider;
+
+  private String providerId;
+
   @CreationTimestamp
   private LocalDateTime createAt;
+
+  @Builder
+  public User(String username, String password, String email, String role, String provider, String providerId) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.role = role;
+    this.provider = provider;
+    this.providerId = providerId;
+  }
 }

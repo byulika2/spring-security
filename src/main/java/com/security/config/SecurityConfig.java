@@ -1,5 +1,7 @@
 package com.security.config;
 
+import com.security.config.oauth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,10 +10,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+// 1. 코드받기(인증)
+// 2. 엑세스토큰(권한)
+// 3. 사용자 프로필 정보를 가져옴
+// 4-1. 정보를 토대로 회원가입을 자동으로 진행시킴
+// 4-2. (이메일, 전화번호, 이름, 아이디) 외 추가정보 필요할때 추가정보를 입력받아야함
+
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터 체인에 등롣됨
 @EnableMethodSecurity(securedEnabled = true) // secured 어노테이션
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final PrincipalOauth2UserService principalOauth2UserService;
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
@@ -34,7 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .defaultSuccessUrl("/")
         .and()
         .oauth2Login()
-        .loginPage("/login-form") // 구글 로그인 후 후처리 필요
+        .loginPage("/login-form")
+        .userInfoEndpoint()
+        .userService(principalOauth2UserService) // 구글 로그인 후 코드 받지않고 엑세스토큰 + 사용자정보를 받아줌
     ;
 
   }
