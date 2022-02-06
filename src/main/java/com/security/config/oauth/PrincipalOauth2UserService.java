@@ -4,9 +4,11 @@ import com.security.auth.PrincipalDetails;
 import com.security.config.oauth.provider.FaceBookUserInfo;
 import com.security.config.oauth.provider.GoogleUserInfo;
 import com.security.config.oauth.provider.KakaoUserInfo;
+import com.security.config.oauth.provider.NaverUserInfo;
 import com.security.config.oauth.provider.OAuth2UserInfo;
 import com.security.model.User;
 import com.security.repository.UserRepository;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -51,8 +53,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         log.info("카카오 로그인 요청");
         break;
 
+      case "naver":
+
+        // kakao는 kakao_account에 유저정보가 있다. (email)
+        Map<String, Object> response = (Map<String, Object>)oAuth2User.getAttributes().get("response");
+
+        oAuth2UserInfo = new NaverUserInfo(response);
+        log.info("네이버 로그인 요청");
+        break;
+
       default:
-        log.error("구글 카카오만 로그인 가능!!");
+        log.error("지원하지 않는 소셜 로그인!!");
     }
 
     String provider = oAuth2UserInfo.getProvider();
