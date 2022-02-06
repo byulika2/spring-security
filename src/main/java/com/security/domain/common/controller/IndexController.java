@@ -9,7 +9,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class IndexController {
 
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @GetMapping("/test/login")
   @ResponseBody
   public String loginTest(Authentication authentication,
-      @AuthenticationPrincipal PrincipalDetails userDetails){
+      @AuthenticationPrincipal PrincipalDetails userDetails) {
     log.info("test/login ==================");
 
     PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
@@ -40,7 +38,7 @@ public class IndexController {
   @GetMapping("/test/oauth/login")
   @ResponseBody
   public String testOauthLogin(Authentication authentication,
-      @AuthenticationPrincipal OAuth2User oauth){
+      @AuthenticationPrincipal OAuth2User oauth) {
     log.info("/test/oauth/login ==================");
 
     OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -88,7 +86,7 @@ public class IndexController {
   @PostMapping("/join")
   public String join(User user) {
     user.setRole("ROLE_USER");
-    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    user.setPassword(user.getPassword());
     userRepository.save(user);
     return "redirect:/login-form";
   }
@@ -96,15 +94,15 @@ public class IndexController {
   @Secured("ROLE_ADMIN") // 단일권한
   @GetMapping("/info")
   @ResponseBody
-  public String info(){
+  public String info() {
     return "개인정보";
   }
 
-//  @PostAuthorize()
+  //  @PostAuthorize()
   @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')") // 권한 여러개일경우
   @GetMapping("/data")
   @ResponseBody
-  public String data(){
+  public String data() {
     return "데이터 정보";
   }
 }

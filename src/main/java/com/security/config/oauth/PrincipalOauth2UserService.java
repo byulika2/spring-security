@@ -1,6 +1,7 @@
 package com.security.config.oauth;
 
 import com.security.auth.PrincipalDetails;
+import com.security.config.oauth.provider.FaceBookUserInfo;
 import com.security.config.oauth.provider.GoogleUserInfo;
 import com.security.config.oauth.provider.KakaoUserInfo;
 import com.security.config.oauth.provider.OAuth2UserInfo;
@@ -40,6 +41,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         log.info("구글 로그인 요청");
         break;
+      case "facebook":
+        oAuth2UserInfo = new FaceBookUserInfo(oAuth2User.getAttributes());
+        log.info("페이스북 로그인 요청");
+        break;
 
       case "kakao":
         oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
@@ -53,7 +58,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     String provider = oAuth2UserInfo.getProvider();
     String providerId = oAuth2UserInfo.getProviderId();
     String username = provider + "_" + providerId; // google_108123987123021
-    String password = username + secretKey;
+    String password = username + "_" + secretKey;
     String email = oAuth2UserInfo.getEmail();
     String role = "ROLE_USER";
 

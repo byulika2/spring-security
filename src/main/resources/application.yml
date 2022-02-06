@@ -28,6 +28,12 @@ spring:
             scope:
             - email
             - profile
+          facebook:
+            client-id: 1097641094424105
+            client-secret: 4546596e8fb0b2b819c65972ca2c2f98
+            scope:
+            - email
+            - public_profile
           kakao:
             client-id: ba4ff23b0b05571d20cc140bd73e416e
             # http://localhost:8080/login/oauth2/code/kakao

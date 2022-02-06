@@ -1,6 +1,9 @@
 package com.security.model;
 
+import com.security.util.PasswordConverter;
 import java.time.LocalDateTime;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +32,7 @@ public class User {
 
   private String username;
 
+  @Convert(converter = PasswordConverter.class)
   private String password;
 
   private String email;
