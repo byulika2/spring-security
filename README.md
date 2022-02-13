@@ -1,3 +1,9 @@
+#Spring Security & OAuth2.0 
+## Authorization Code Grant Type(권한 부여 코드 승인 타입)
+```
+
+```
+
 # H2 in memory intellij 설정 방법
 ```
 host: localhost
